@@ -2,24 +2,25 @@ package br.com.fiap.beans;
 
 public class Feedback {
 
-    private int id;
+    private int idTentativaPrompt;
     private int nota;
     private String feedback;
 
-    public Feedback(int id, int nota, String feedback) {
-        this.id = id;
+    public Feedback(int idTentativaPrompt, int nota, String feedback) {
+        this.idTentativaPrompt = idTentativaPrompt;
         this.nota = nota;
         this.feedback = feedback;
     }
 
     public Feedback() {}
+    
 
-    public int getId() {
-        return id;
+    public int getIdTentativaPrompt() {
+        return idTentativaPrompt;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdTentativaPrompt(int idTentativaPrompt) {
+        this.idTentativaPrompt = idTentativaPrompt;
     }
 
     public int getNota() {

@@ -1,5 +1,10 @@
-*
-!target/*-runner
-!target/*-runner.jar
-!target/lib/*
-!target/quarkus-app/*
+# Exclui a pasta de artefatos de build (a ser criada na etapa RUN do Dockerfile)
+target/
+
+# Exclui pastas e arquivos relacionados ao Git, IDE e Maven
+.git
+.gitignore
+.idea
+.mvn
+mvnw
+mvnw.cmd

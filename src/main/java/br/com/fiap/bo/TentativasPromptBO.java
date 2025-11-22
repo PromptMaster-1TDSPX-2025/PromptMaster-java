@@ -67,7 +67,7 @@ public class TentativasPromptBO {
             // GERAR E SALVAR O FEEDBACK (delega para FeedbackBO)
             Feedback feedback = feedbackBO.gerarESalvarFeedback(conn, prompt, idPromptGerado);
             int nota = feedback.getNota();
-            String feedbackTexto = feedback.getFeedbackTexto();
+            String feedbackTexto = feedback.getFeedback();
 
             // PROCESSAR PROGRESSO (XP e Nível) - delega para ProgressoBO
             progressoBO.processarXpENivel(conn, idUsuario, idLicao, nota);

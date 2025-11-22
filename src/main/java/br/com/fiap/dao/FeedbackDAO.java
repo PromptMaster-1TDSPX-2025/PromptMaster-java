@@ -22,7 +22,7 @@ public class FeedbackDAO {
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
 
 
-            ps.setInt(1, feedback.getId());
+            ps.setInt(1, feedback.getIdTentativaPrompt());
 
             ps.setInt(2, feedback.getNota());
 
