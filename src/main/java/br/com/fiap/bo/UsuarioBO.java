@@ -114,4 +114,31 @@ public class UsuarioBO {
         }
     }
 
+    /**
+     * Realiza o login verificando credenciais e retornando o usuário completo.
+     */
+    public Usuario realizarLogin(String login, String senha) throws Exception {
+        Connection conn = null;
+        try {
+            conn = new ConnectionManager().conexao();
+
+            // Verifica se login/senha batem
+            int idUsuario = loginDAO.verificarCredenciais(conn, login, senha);
+
+            if (idUsuario == -1) {
+                return null; // Login falhou
+            }
+
+            // Se deu certo, busca os dados completos do usuário (XP, Nível, Nome)
+            return usuarioDAO.buscarUsuarioPorId(conn, idUsuario);
+
+        } catch (Exception e) {
+            throw new Exception("Erro interno ao realizar login.", e);
+        } finally {
+            if (conn != null) {
+                try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
+            }
+        }
+    }
+
 }

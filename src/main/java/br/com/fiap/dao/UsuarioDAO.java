@@ -100,4 +100,28 @@ public class UsuarioDAO {
             throw new DaoException("Erro ao atualizar o nível do usuário.", e);
         }
     }
+
+    public Usuario buscarUsuarioPorId(Connection conn, int idUsuario) {
+        String sql = "SELECT * FROM TB_USUARIO WHERE id_usuario = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Usuario u = new Usuario();
+                    u.setId(rs.getInt("ID_USUARIO"));
+                    u.setNome(rs.getString("NOME_USUARIO"));
+                    u.setIdade(rs.getInt("IDADE_USUARIO"));
+                    u.setTotalXp(rs.getInt("TOTAL_XP_USUARIO"));
+                    u.setNivel(rs.getInt("NIVEL_USUARIO"));
+                    return u;
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Erro ao buscar usuário por ID.", e);
+        }
+        return null;
+    }
+
 }

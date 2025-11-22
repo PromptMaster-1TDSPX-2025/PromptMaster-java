@@ -5,6 +5,7 @@ import br.com.fiap.excessoes.DaoException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LoginUsuarioDAO {
@@ -27,4 +28,27 @@ public class LoginUsuarioDAO {
             throw new DaoException("Erro ao inserir Login de Usuário.", e);
         }
     }
+
+    /**
+     * Verifica se o login e senha correspondem a um usuário.
+     * @return O ID do usuário se correto, ou -1 se incorreto.
+     */
+    public int verificarCredenciais(Connection conn, String login, String senha) {
+        String sql = "SELECT id_usuario FROM TB_LOGIN_USUARIO WHERE login = ? AND senha = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, login);
+            ps.setString(2, senha);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("id_usuario");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Erro ao verificar credenciais.", e);
+        }
+        return -1; // Login ou senha inválidos
+    }
+
 }
