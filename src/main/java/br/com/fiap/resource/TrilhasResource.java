@@ -1,13 +1,14 @@
 package br.com.fiap.resource;
 
+import br.com.fiap.beans.Trilhas;
 import br.com.fiap.bo.TentativasPromptBO;
+import br.com.fiap.bo.TrilhasBO;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 /**
  * Endpoint para gerenciar ações de Trilha (Ativação).
@@ -18,6 +19,25 @@ public class TrilhasResource {
 
     @Inject
     private TentativasPromptBO tentativasPromptBO;
+
+    @Inject
+    private TrilhasBO trilhasBO;
+
+    /**
+     * Endpoint para listar todas as trilhas disponíveis.
+     * URL: GET /trilhas
+     */
+    @GET
+    public Response listarTrilhas() {
+        try {
+            List<Trilhas> trilhas = trilhasBO.listarTrilhas();
+            return Response.ok(trilhas).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao listar trilhas.").build();
+        }
+    }
 
     /**
      * Endpoint para ativar uma trilha para um usuário.
