@@ -88,7 +88,7 @@ public class TentativasPromptBO {
             // FINALIZAÇÃO DA TRANSAÇÃO
             conn.commit();
 
-            return feedbackTexto;
+            return "NOTA:" + nota + "|FEEDBACK:" + feedbackTexto;
 
         } catch (DaoException | IllegalArgumentException e) {
             // --- Rollback (Se algo falhou) ---
