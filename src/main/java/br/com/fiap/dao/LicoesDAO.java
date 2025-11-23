@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LicoesDAO {
 
@@ -79,11 +81,12 @@ public class LicoesDAO {
         }
     }
 
-    private static final String SQL_BUSCAR_ID_TRILHA =
-            "SELECT id_trilha FROM TB_LICOES WHERE id_licao = ?";
 
     public int buscarIdTrilha(Connection conn, int idLicao) {
-        try (PreparedStatement ps = conn.prepareStatement(SQL_BUSCAR_ID_TRILHA)) {
+
+        String sql = "SELECT id_trilha FROM TB_LICOES WHERE id_licao = ?";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, idLicao);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -95,4 +98,32 @@ public class LicoesDAO {
             throw new DaoException("Erro ao buscar ID da trilha da lição.", e);
         }
     }
+
+
+    /**
+     * Lista todas as lições de uma determinada trilha.
+     */
+    public List<Licoes> listarPorTrilha(Connection conn, int idTrilha) {
+        List<Licoes> lista = new ArrayList<>();
+
+        String sql = "SELECT id_licao, numero_licao, titulo_licao FROM TB_LICOES WHERE id_trilha = ? ORDER BY numero_licao ASC";
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idTrilha);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Licoes licao = new Licoes();
+                    licao.setId(rs.getInt("id_licao"));
+                    licao.setNumeroLicao(rs.getInt("numero_licao"));
+                    licao.setTitulo(rs.getString("titulo_licao"));
+                    lista.add(licao);
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Erro ao listar lições da trilha.", e);
+        }
+        return lista;
+    }
+
 }

@@ -1,5 +1,6 @@
 package br.com.fiap.resource;
 
+import br.com.fiap.beans.LicaoDetalhada;
 import br.com.fiap.beans.Trilhas;
 import br.com.fiap.bo.TentativasPromptBO;
 import br.com.fiap.bo.TrilhasBO;
@@ -86,6 +87,29 @@ public class TrilhasResource {
         } catch (Exception e) {
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Lista as lições de uma trilha com o status calculado para o usuário.
+     * URL: GET /trilhas/{idTrilha}/licoes/{idUsuario}
+     */
+    @GET
+    @Path("/{idTrilha}/licoes/{idUsuario}")
+    public Response listarLicoesDaTrilha(@PathParam("idTrilha") int idTrilha, @PathParam("idUsuario") int idUsuario) {
+        try {
+            if (idTrilha <= 0 || idUsuario <= 0) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("IDs inválidos.").build();
+            }
+
+            List<LicaoDetalhada> licoes = trilhasBO.obterLicoesComStatus(idTrilha, idUsuario);
+            return Response.ok(licoes).build();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao buscar lições da trilha.").build();
         }
     }
 
