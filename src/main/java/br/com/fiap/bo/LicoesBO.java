@@ -3,10 +3,12 @@ package br.com.fiap.bo;
 import br.com.fiap.beans.Licoes;
 import br.com.fiap.conexoes.ConnectionManager;
 import br.com.fiap.dao.LicoesDAO;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@ApplicationScoped
 public class LicoesBO {
 
     private LicoesDAO licoesDAO;
