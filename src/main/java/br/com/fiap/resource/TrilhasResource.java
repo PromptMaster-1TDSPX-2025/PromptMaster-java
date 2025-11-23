@@ -72,4 +72,21 @@ public class TrilhasResource {
                     .entity("Erro interno ao processar a ativação da trilha.").build();
         }
     }
+
+    /**
+     * Retorna lista de IDs das trilhas que o usuário já ativou.
+     * URL: GET /trilhas/ativas/{idUsuario}
+     */
+    @GET
+    @Path("/ativas/{idUsuario}")
+    public Response buscarTrilhasAtivasUsuario(@PathParam("idUsuario") int idUsuario) {
+        try {
+            List<Integer> idsAtivos = trilhasBO.listarIdsTrilhasAtivas(idUsuario);
+            return Response.ok(idsAtivos).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

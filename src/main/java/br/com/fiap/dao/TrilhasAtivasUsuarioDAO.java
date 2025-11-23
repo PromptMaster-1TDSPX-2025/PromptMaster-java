@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TrilhasAtivasUsuarioDAO {
 
@@ -75,4 +77,29 @@ public class TrilhasAtivasUsuarioDAO {
             throw new DaoException("Erro ao verificar se a trilha está ativa.", e);
         }
     }
+
+
+    /**
+     * Retorna uma lista com os IDs das trilhas que o usuário já ativou.
+     */
+    public List<Integer> buscarIdsTrilhasAtivas(Connection conn, int idUsuario) {
+
+        String sql = "SELECT id_trilha FROM TB_TRILHAS_ATIVAS_USUARIO WHERE id_usuario = ? AND status = 'ATIVA'";
+
+        List<Integer> ids = new ArrayList<>();
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    ids.add(rs.getInt("id_trilha"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Erro ao buscar trilhas ativas do usuário.", e);
+        }
+        return ids;
+    }
+
 }
